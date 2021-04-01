@@ -1,0 +1,115 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "defaultTitle",
+    "description": "defaultDescription",
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000"
+    }
+  ],
+  "paths": {
+    "/types": {
+      "get": {
+        "description": "Auto generated using Swagger Inspector",
+        "responses": {
+          "200": {
+            "description": "Auto generated using Swagger Inspector",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "0": {
+                    "value": "[\"Bug\",\"Dark\",\"Dragon\",\"Electric\",\"Fairy\",\"Fighting\",\"Fire\",\"Flying\",\"Ghost\",\"Grass\",\"Ground\",\"Ice\",\"Normal\",\"Poison\",\"Psychic\",\"Rock\",\"Steel\",\"Water\"]\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://127.0.0.1:5000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://127.0.0.1:5000"
+        }
+      ]
+    },
+    "/pokemon/stats": {
+      "get": {
+        "description": "Auto generated using Swagger Inspector",
+        "responses": {
+          "200": {
+            "description": "Auto generated using Swagger Inspector",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "0": {
+                    "value": "[[1,45,49,65,49,65,45],[2,60,62,80,63,80,60],[3,80,82,100,83,100,80],[4,39,52,60,43,50,65],[5,58,64,80,58,65,80],[6,78,84,109,78,85,100],[7,44,48,50,65,64,43],[8,59,63,65,80,80,58],[9,79,83,85,100,105,78],[10,45,30,20,35,20,45],[11,50,20,25,55,25,30],[12,60,45,90,50,80,70],[13,40,35,20,30,20,50],[14,45,25,25,50,25,35],[15,65,90,45,40,80,75],[16,40,45,35,40,35,56],[17,63,60,50,55,50,71],[18,83,80,70,75,70,101],[19,30,56,25,35,35,72],[20,55,81,50,60,70,97],[21,40,60,31,30,31,70],[22,65,90,61,65,61,100],[23,35,60,40,44,54,55],[24,60,85,65,69,79,80],[25,35,55,50,40,50,90],[26,60,90,90,55,80,110],[27,50,75,20,85,30,40]]\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://127.0.0.1:5000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://127.0.0.1:5000"
+        }
+      ]
+    },
+    "/pokemon": {
+      "get": {
+        "description": "Auto generated using Swagger Inspector",
+        "responses": {
+          "200": {
+            "description": "Auto generated using Swagger Inspector",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "0": {
+                    "value": "[[1,\"Bulbasaur\",\"Grass\",\"Poison\"],[2,\"Ivysaur\",\"Grass\",\"Poison\"],[3,\"Venusaur\",\"Grass\",\"Poison\"],[4,\"Charmander\",\"Fire\",null],[5,\"Charmeleon\",\"Fire\",null],[6,\"Charizard\",\"Fire\",\"Flying\"],[7,\"Squirtle\",\"Water\",null],[8,\"Wartortle\",\"Water\",null],[9,\"Blastoise\",\"Water\",null],[10,\"Caterpie\",\"Bug\",null],[11,\"Metapod\",\"Bug\",null],[12,\"Butterfree\",\"Bug\",\"Flying\"],[13,\"Weedle\",\"Bug\",\"Poison\"],[14,\"Kakuna\",\"Bug\",\"Poison\"],[15,\"Beedrill\",\"Bug\",\"Poison\"],[16,\"Pidgey\",\"Normal\",\"Flying\"],[17,\"Pidgeotto\",\"Normal\",\"Flying\"],[18,\"Pidgeot\",\"Normal\",\"Flying\"],[19,\"Rattata\",\"Normal\",null],[20,\"Raticate\",\"Normal\",null],[21,\"Spearow\",\"Normal\",\"Flying\"],[22,\"Fearow\",\"Normal\",\"Flying\"],[23,\"Ekans\",\"Poison\",null],[24,\"Arbok\",\"Poison\",null],[25,\"Pikachu\",\"Electric\",null],[26,\"Raichu\",\"Electric\",null],[27,\"Sandshrew\",\"Ground\",null]]\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://127.0.0.1:5000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://127.0.0.1:5000"
+        }
+      ]
+    }
+  },
+  "components": {}
+}
