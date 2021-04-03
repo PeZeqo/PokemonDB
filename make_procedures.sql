@@ -131,7 +131,76 @@ END $$
 DELIMITER ;
 
 CALL remove_stats(720);
+CALL remove_pokemon(720);
 
+
+
+
+-- GETTING ALL OF TRAINERS CAPTURED POKEMON
+
+DROP PROCEDURE IF EXISTS get_trainers_pokemon;
+DELIMITER $$
+
+CREATE PROCEDURE get_trainers_pokemon(IN tr_id INT)
+BEGIN
+	SELECT * FROM capturedpokemon WHERE trainer_id = tr_id;
+END $$
+
+DELIMITER ;
+
+
+-- GETTING CAPTURED POKEMON
+
+DROP PROCEDURE IF EXISTS get_captured_pokemon;
+DELIMITER $$
+
+CREATE PROCEDURE get_captured_pokemon(IN cpk_id INT)
+BEGIN
+	SELECT * FROM capturedpokemon WHERE capt_pokemon_id = cpk_id;
+END $$
+
+DELIMITER ;
+
+
+-- GETTING CAPTURED POKEMON WITH STATS AND MOVES
+
+DROP PROCEDURE IF EXISTS get_captured_pokemon_with_moves_and_stats;
+DELIMITER $$
+
+CREATE PROCEDURE get_captured_pokemon_with_moves_and_stats(IN cpk_id INT)
+BEGIN
+	SELECT * FROM capturedpokemon
+    NATURAL JOIN stats
+    NATURAL JOIN moves
+    NATURAL JOIN learnedmvoes
+	WHERE capt_pokemon_id = cpk_id;
+END $$
+
+DELIMITER ;
+
+
+-- ADDING CAPTURED POKEMON
+
+DROP PROCEDURE IF EXISTS add_captured_pokemon;
+DELIMITER $$
+
+CREATE PROCEDURE add_captured_pokemon(IN pk_id INT, IN lvl INT, in nickname VARCHAR(50), IN tr_id INT)
+BEGIN
+	INSERT INTO capturedpokemon VALUES (pk_id, lvl, nickname, tr_id);
+END $$
+
+
+-- DELETING CAPTURED POKEMON
+
+DROP PROCEDURE IF EXISTS remove_captured_pokemon;
+DELIMITER $$
+
+CREATE PROCEDURE remove_captured_pokemon(IN cpk_id INT)
+BEGIN
+	DELETE FROM capturedpokemon WHERE capt_pokemon_id = cpk_id;
+END $$
+
+DELIMITER ;
 
 
 
@@ -143,12 +212,15 @@ DROP TRIGGER IF EXISTS increment_trainer_money;
 DELIMITER $$
 
 CREATE TRIGGER increment_trainer_money
-	AFTER INSERT ON Battle
+	AFTER INSERT ON Battles
 	FOR EACH ROW
 BEGIN
 	UPDATE Trainer
 	SET money = (money+NEW.prize)
 	WHERE trainer_id = NEW.winner;
+    UPDATE Trainer
+	SET money = (money-NEW.prize)
+	WHERE trainer_id = IF(NEW.winner = NEW.trainer1, trainer2, trainer1);
 END $$
 
 DELIMITER ;
