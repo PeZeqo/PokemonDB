@@ -15,7 +15,7 @@ CREATE TABLE Pokemon (
 	pokemon_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     type1 INT NOT NULL,
-    type2 INT
+    type2 INT,
 	FOREIGN KEY (type1) REFERENCES Typing(type_id) ON DELETE RESTRICT ON UPDATE CASCADE,
 	FOREIGN KEY (type2) REFERENCES Typing(type_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -34,9 +34,9 @@ CREATE TABLE Stats (
 CREATE TABLE Trainer (
 	trainer_id INT AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
-	money INT NOT NULL,
-	location VARCHAR(50) NOT NULL,
-    num_captured_pokemon INT NOT NULL
+	money INT NOT NULL DEFAULT 0,
+	location VARCHAR(50) NOT NULL DEFAULT 'Pallet Town',
+    num_captured_pokemon INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE CapturedPokemon (

@@ -18,7 +18,6 @@ BEGIN
 END $$
 
 DELIMITER ;
-CALL add_pokemon("thing", 1, NULL);
 
 
 -- GETTING POKEMON
@@ -32,7 +31,6 @@ BEGIN
 END $$
 
 DELIMITER ;
-CALL get_pokemon_by_id(1);
 
 -- GET POKEMON WITH STATS
 
@@ -47,7 +45,6 @@ BEGIN
 END $$
 
 DELIMITER ;
-CALL get_pokemon_and_stats(1);
 
 
 -- REMOVE POKEMON
@@ -61,8 +58,6 @@ BEGIN
 END $$
 
 DELIMITER ;
-
-CALL remove_pokemon(720);
 
 
 
@@ -84,7 +79,6 @@ BEGIN
 END $$
 
 DELIMITER ;
-CALL get_pokemon_stats_by_id(1);
 
 
 -- ADDING STATS
@@ -98,10 +92,6 @@ BEGIN
 END $$
 
 DELIMITER ;
-
-CALL add_pokemon(720, "thing", "Normal", NULL);
-CALL add_stats(720, 10, 9, 8, 7, 6, 5);
-CALL get_pokemon_stats_by_id(720);
 
 
 -- UPDATE STATS
@@ -123,9 +113,6 @@ END $$
 
 DELIMITER ;
 
-CALL update_stats(720, 11, 12, 13, 14, 15, 16);
-CALL get_pokemon_stats_by_id(720);
-
 
 -- REMOVE STATS
 
@@ -138,9 +125,6 @@ BEGIN
 END $$
 
 DELIMITER ;
-
-CALL remove_stats(720);
-CALL remove_pokemon(720);
 
 
 
@@ -206,6 +190,8 @@ BEGIN
 	INSERT INTO capturedpokemon VALUES (NULL, pk_id, lvl, nickname, tr_id);
 END $$
 
+DELIMITER ;
+
 
 -- DELETING CAPTURED POKEMON
 
@@ -251,6 +237,8 @@ BEGIN
 	SELECT * FROM move WHERE move_id = mv_id;
 END $$
 
+DELIMITER ;
+
 
 -- GETTING A MOVE BY NAME
 
@@ -261,6 +249,8 @@ CREATE PROCEDURE get_move_by_name(IN move_name VARCHAR(50))
 BEGIN
 	SELECT * FROM move WHERE name = move_name;
 END $$
+
+DELIMITER ;
 
 -- ADDING A MOVE
 
@@ -276,6 +266,8 @@ CREATE PROCEDURE add_move(IN name VARCHAR(50),
 BEGIN
 	INSERT INTO move VALUES (NULL, name, type_name, power, accuracy, pp, category);
 END $$
+
+DELIMITER ;
 
 
 -- DELETING A MOVE
@@ -311,6 +303,8 @@ BEGIN
     WHERE capt_pokemon_id = cpt_pk_id;
 END $$
 
+DELIMITER ;
+
 
 -- LEARNING A MOVE BY ID
 
@@ -321,6 +315,8 @@ CREATE PROCEDURE learn_move_by_id(IN move_id INT, IN cpt_pk_id INT)
 BEGIN
 	INSERT INTO learnedmoves VALUES (move_id, cpt_pk_id);
 END $$
+
+DELIMITER ;
 
 
 -- LEARNING A MOVE BY NAME
@@ -335,6 +331,8 @@ BEGIN
         cpt_pk_id);
 END $$
 
+DELIMITER ;
+
 
 -- FORGET A MOVE BY ID
 
@@ -346,6 +344,8 @@ BEGIN
 	DELETE FROM learnedmoves 
     WHERE move_id = mv_id AND capt_pokemon_id = cpt_pk_id;
 END $$
+
+DELIMITER ;
 
 
 -- FORGET A MOVE BY NAME
@@ -359,6 +359,8 @@ BEGIN
     WHERE move_id = (SELECT move_id FROM move WHERE name = move_name) 
     AND capt_pokemon_id = cpt_pk_id;
 END $$
+
+DELIMITER ;
 
 
 
@@ -379,6 +381,8 @@ BEGIN
 	SELECT * FROM trainer WHERE trainer_id = tr_id;
 END $$
 
+DELIMITER ;
+
 
 -- ADDING A TRAINER
 
@@ -387,8 +391,10 @@ DELIMITER $$
 
 CREATE PROCEDURE add_trainer(name VARCHAR(50))
 BEGIN
-	INSERT INTO trainer VALUES (NULL, name, 0, "Pallet Town", 0);
+	INSERT INTO trainer VALUES (NULL, name, DEFAULT, DEFAULT, DEFAULT);
 END $$
+
+DELIMITER ;
 
 
 -- REMOVE A TRAINER
@@ -422,6 +428,8 @@ BEGIN
 	SELECT * FROM typing;
 END $$
 
+DELIMITER ;
+
 
 -- ADDING A TYPING
 
@@ -432,6 +440,8 @@ CREATE PROCEDURE add_type(name VARCHAR(20))
 BEGIN
 	INSERT INTO typing VALUES (NULL, name);
 END $$
+
+DELIMITER ;
 
 
 -- REMOVE A TYPE
@@ -469,6 +479,8 @@ BEGIN
     ON p2.pk_id = e.evolved_pokemon_id;
 END $$
 
+DELIMITER ;
+
 
 -- ADDING AN EVOLTUION
 
@@ -479,6 +491,8 @@ CREATE PROCEDURE add_evolution(IN bs_id INT, IN evo_id INT)
 BEGIN
 	INSERT INTO evolutions VALUES (bs_id, evo_id);
 END $$
+
+DELIMITER ;
 
 
 -- REMOVING AN EVOLUTION
@@ -492,6 +506,8 @@ BEGIN
     WHERE base_pokemon_id = bs_id
     AND evolved_pokemon_id = evo_id;
 END $$
+
+DELIMITER ;
 
 
 
@@ -507,12 +523,14 @@ BATTLE PROCEDURES
 DROP PROCEDURE IF EXISTS get_trainer_battles;
 DELIMITER $$
 
-CREATE PROCEDURE get_trainer_battles(IN tr_id)
+CREATE PROCEDURE get_trainer_battles(IN tr_id INT)
 BEGIN
 	SELECT * FROM battles
     WHERE trainer1 = tr_id
     OR trainer2 = tr_id;
 END $$
+
+DELIMITER ;
 
 
 -- ADDING A BATTLE
@@ -525,6 +543,8 @@ BEGIN
 	INSERT INTO battles VALUES (NULL, tr_id1, tr_id2, winner, prize);
 END $$
 
+DELIMITER ;
+
 
 -- REMOVING A BATTLE
 
@@ -535,5 +555,7 @@ CREATE PROCEDURE remove_battle(IN btl_id INT)
 BEGIN
 	DELETE FROM battles WHERE battle_id = btl_id;
 END $$
+
+DELIMITER ;
 
 
