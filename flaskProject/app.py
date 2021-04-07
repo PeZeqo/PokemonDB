@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from SETTINGS import config_file_path
 import json
 from flask_mysqldb import MySQL
-from flask_restplus import Api, Resource
+from flask_restplus import Api, Resource, fields
 
 app = Flask(__name__)
 api = Api(app)
@@ -33,6 +33,17 @@ class GetAllPokemon(Resource):
     def get(self):
         cur = mysql.connection.cursor()
         query = ("SELECT * FROM pokemon;")
+        cur.execute(query)
+        response = [entry for entry in cur.fetchall()]
+        return jsonify(response)
+
+
+@api.route('/pokemon/add')
+class AddPokemon(Resource):
+    @api.expect([api.model('Resource', {'name': fields.String, 'type1': fields.Integer, 'type2': fields.Integer})], envelope='resource')
+    def post(self):
+        cur = mysql.connection.cursor()
+        query = ("SELECT * FROM pokemon")
         cur.execute(query)
         response = [entry for entry in cur.fetchall()]
         return jsonify(response)
