@@ -12,7 +12,7 @@ POKEMON PROCEDURES
 DROP PROCEDURE IF EXISTS add_pokemon;
 DELIMITER $$
 
-CREATE PROCEDURE add_pokemon(IN name VARCHAR(50), IN type1 VARCHAR(20), IN type2 VARCHAR(20))
+CREATE PROCEDURE add_pokemon(IN name VARCHAR(50), IN type1 INT, IN type2 INT)
 BEGIN
 	INSERT INTO pokemon VALUES(NULL, name, type1, type2);
 END $$
@@ -258,13 +258,13 @@ DROP PROCEDURE IF EXISTS add_move;
 DELIMITER $$
 
 CREATE PROCEDURE add_move(IN name VARCHAR(50),
-	IN type_name VARCHAR(20),
+	IN type INT,
     IN power INT,
     IN accuracy INT,
     IN pp INT,
     IN category VARCHAR(20))
 BEGIN
-	INSERT INTO move VALUES (NULL, name, type_name, power, accuracy, pp, category);
+	INSERT INTO move VALUES (NULL, name, type, power, accuracy, pp, category);
 END $$
 
 DELIMITER ;
