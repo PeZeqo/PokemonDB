@@ -11,6 +11,7 @@
 3. Install Python 3.6
 4. Install requirements
    - python -m pip install -r requirements.txt
-5. Run "app.py" in flaskproject
-6. Access http://127.0.0.1:5000/ to check Swagger API
+5. Update config.json in flaskproject to target your DB correctly
+6. Run "app.py" in flaskproject
+7. Access http://127.0.0.1:5000/ to check Swagger API
 
