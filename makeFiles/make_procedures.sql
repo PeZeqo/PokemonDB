@@ -165,15 +165,18 @@ DELIMITER ;
 
 -- GETTING CAPTURED POKEMON WITH STATS AND MOVES
 
-DROP PROCEDURE IF EXISTS get_captured_pokemon_with_moves_and_stats;
+DROP PROCEDURE IF EXISTS get_full_captured_pokemon_info;
 DELIMITER $$
 
-CREATE PROCEDURE get_captured_pokemon_with_moves_and_stats(IN cpk_id INT)
+CREATE PROCEDURE get_full_captured_pokemon_info(IN cpk_id INT)
 BEGIN
 	SELECT * FROM capturedpokemon
     NATURAL JOIN stats
-    NATURAL JOIN moves
-    NATURAL JOIN learnedmvoes
+    NATURAL JOIN pokemon p
+    INNER JOIN (select type_name as type1_name, type_id from typing) t1
+    on p.type1 = t1.type_id
+    INNER JOIN (select type_name as type2_name, type_id from typing) t2
+    on p.type2 = t2.type_id
 	WHERE capt_pokemon_id = cpk_id;
 END $$
 
@@ -213,7 +216,20 @@ DELIMITER $$
 
 CREATE PROCEDURE level_captured_pokemon(IN cpk_id INT)
 BEGIN
-	UPDATE capturedpokemon SET level = level + 1 WHERE capt_pokemon_id = cpk_id;
+	UPDATE capturedpokemon SET level = if(level = 100, 100, level + 1) WHERE capt_pokemon_id = cpk_id;
+END $$
+
+DELIMITER ;
+
+
+-- RENAME CAPTURED POKEMON
+
+DROP PROCEDURE IF EXISTS rename_captured_pokemon;
+DELIMITER $$
+
+CREATE PROCEDURE rename_captured_pokemon(IN cpk_id INT, IN name VARCHAR(50))
+BEGIN
+	UPDATE capturedpokemon SET nickname = name WHERE capt_pokemon_id = cpk_id;
 END $$
 
 DELIMITER ;
