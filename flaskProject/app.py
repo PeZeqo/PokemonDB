@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
-from SETTINGS import config_file_path
-import json
 from flask_mysqldb import MySQL
 from flask_restplus import Api, Resource, fields, reqparse
+from SETTINGS import config_file_path
+import json
 import sys
 
 
