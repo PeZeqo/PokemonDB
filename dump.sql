@@ -34,7 +34,7 @@ CREATE TABLE `battles` (
   KEY `trainer1` (`trainer1`),
   CONSTRAINT `battles_ibfk_1` FOREIGN KEY (`trainer1`) REFERENCES `trainer` (`trainer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `battles_ibfk_2` FOREIGN KEY (`trainer1`) REFERENCES `trainer` (`trainer_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +43,7 @@ CREATE TABLE `battles` (
 
 LOCK TABLES `battles` WRITE;
 /*!40000 ALTER TABLE `battles` DISABLE KEYS */;
+INSERT INTO `battles` VALUES (1,1,2,1,200),(2,2,3,3,100),(3,4,1,4,500),(4,3,4,3,1000),(5,1,2,2,250);
 /*!40000 ALTER TABLE `battles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -60,7 +61,7 @@ DELIMITER ;;
 	WHERE trainer_id = NEW.winner;
     UPDATE Trainer
 	SET money = (money-NEW.prize)
-	WHERE trainer_id = IF(NEW.winner = NEW.trainer1, trainer2, trainer1);
+	WHERE trainer_id = IF(NEW.winner = NEW.trainer1, NEW.trainer2, NEW.trainer1);
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -95,7 +96,7 @@ CREATE TABLE `capturedpokemon` (
 
 LOCK TABLES `capturedpokemon` WRITE;
 /*!40000 ALTER TABLE `capturedpokemon` DISABLE KEYS */;
-INSERT INTO `capturedpokemon` VALUES (1,1,5,'Bulbasaur',1),(2,4,5,'Charmander',2),(3,7,5,'Squirtle',3),(4,151,70,'Mewtwo',4),(5,31,70,'Nidoqueen',4),(6,34,70,'Nidoking',4);
+INSERT INTO `capturedpokemon` VALUES (1,1,6,'Bulby',1),(2,4,5,'Charmander',2),(3,7,5,'Squirtle',3),(4,151,70,'Mewtwo',4),(5,31,70,'Nidoqueen',4),(6,34,70,'Nidoking',4);
 /*!40000 ALTER TABLE `capturedpokemon` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -305,7 +306,7 @@ CREATE TABLE `trainer` (
 
 LOCK TABLES `trainer` WRITE;
 /*!40000 ALTER TABLE `trainer` DISABLE KEYS */;
-INSERT INTO `trainer` VALUES (1,'Peter',513,'Lavendar Town',1),(2,'Ryan',317,'Cinnabar Island',1),(3,'Oak',50000,'Pallet Town',1),(4,'Giovani',1000000,'Cerulian Cave',3);
+INSERT INTO `trainer` VALUES (1,'Peter',450,'Lavendar Town',1),(2,'Ryan',950,'Cinnabar Island',1),(3,'Oak',51300,'Pallet Town',1),(4,'Giovani',1000500,'Cerulian Cave',3);
 /*!40000 ALTER TABLE `trainer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,7 +321,7 @@ CREATE TABLE `typing` (
   `type_id` int(11) NOT NULL AUTO_INCREMENT,
   `type_name` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -589,10 +590,10 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_evolutions`()
 BEGIN
 	SELECT base_pokeomn, evolved_pokemon FROM evolutions e
-    INNER JOIN (SELECT name as base_pokeomn, pk_id from evolutions) p1
-    ON p1.pk_id = e.base_pokemon_id
-    INNER JOIN (SELECT name as evolved_pokemon, pk_id from evolutions) p2
-    ON p2.pk_id = e.evolved_pokemon_id;
+	INNER JOIN (SELECT name as base_pokeomn, pokemon_id from pokemon) p1
+	ON p1.pokemon_id = e.base_pokemon_id
+	INNER JOIN (SELECT name as evolved_pokemon, pokemon_id from pokemon) p2
+	ON p2.pokemon_id = e.evolved_pokemon_id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -611,12 +612,14 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_full_captured_pokemon_info`(IN cpk_id INT)
 BEGIN
-	SELECT * FROM capturedpokemon
-    NATURAL JOIN stats
-    NATURAL JOIN pokemon p
+	SELECT * FROM capturedpokemon cp
+    INNER JOIN stats s
+    on s.pokemon_id = cp.pokemon_id
+    INNER JOIN pokemon p
+    on p.pokemon_id = cp.pokemon_id
     INNER JOIN (select type_name as type1_name, type_id from typing) t1
     on p.type1 = t1.type_id
-    INNER JOIN (select type_name as type2_name, type_id from typing) t2
+    LEFT JOIN (select type_name as type2_name, type_id from typing) t2
     on p.type2 = t2.type_id
 	WHERE capt_pokemon_id = cpk_id;
 END ;;
@@ -880,6 +883,25 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `move_trainer` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `move_trainer`(tr_id INT, new_loc VARCHAR(50))
+BEGIN
+	UPDATE trainer SET location=new_loc WHERE trainer_id = tr_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `remove_battle` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1089,4 +1111,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-08 22:26:22
+-- Dump completed on 2021-04-15 16:52:36

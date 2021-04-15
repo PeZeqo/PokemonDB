@@ -12,7 +12,7 @@ BEGIN
 	WHERE trainer_id = NEW.winner;
     UPDATE Trainer
 	SET money = (money-NEW.prize)
-	WHERE trainer_id = IF(NEW.winner = NEW.trainer1, trainer2, trainer1);
+	WHERE trainer_id = IF(NEW.winner = NEW.trainer1, NEW.trainer2, NEW.trainer1);
 END $$
 
 DELIMITER ;

@@ -170,12 +170,14 @@ DELIMITER $$
 
 CREATE PROCEDURE get_full_captured_pokemon_info(IN cpk_id INT)
 BEGIN
-	SELECT * FROM capturedpokemon
-    NATURAL JOIN stats
-    NATURAL JOIN pokemon p
+	SELECT * FROM capturedpokemon cp
+    INNER JOIN stats s
+    on s.pokemon_id = cp.pokemon_id
+    INNER JOIN pokemon p
+    on p.pokemon_id = cp.pokemon_id
     INNER JOIN (select type_name as type1_name, type_id from typing) t1
     on p.type1 = t1.type_id
-    INNER JOIN (select type_name as type2_name, type_id from typing) t2
+    LEFT JOIN (select type_name as type2_name, type_id from typing) t2
     on p.type2 = t2.type_id
 	WHERE capt_pokemon_id = cpk_id;
 END $$
@@ -413,6 +415,19 @@ END $$
 DELIMITER ;
 
 
+-- Move A TRAINER
+
+DROP PROCEDURE IF EXISTS move_trainer;
+DELIMITER $$
+
+CREATE PROCEDURE move_trainer(IN tr_id INT, IN new_loc VARCHAR(50))
+BEGIN
+	UPDATE trainer SET location=new_loc WHERE trainer_id = tr_id;
+END $$
+
+DELIMITER ;
+
+
 -- REMOVE A TRAINER
 
 DROP PROCEDURE IF EXISTS remove_trainer;
@@ -489,10 +504,10 @@ DELIMITER $$
 CREATE PROCEDURE get_evolutions()
 BEGIN
 	SELECT base_pokeomn, evolved_pokemon FROM evolutions e
-    INNER JOIN (SELECT name as base_pokeomn, pk_id from evolutions) p1
-    ON p1.pk_id = e.base_pokemon_id
-    INNER JOIN (SELECT name as evolved_pokemon, pk_id from evolutions) p2
-    ON p2.pk_id = e.evolved_pokemon_id;
+	INNER JOIN (SELECT name as base_pokeomn, pokemon_id from pokemon) p1
+	ON p1.pokemon_id = e.base_pokemon_id
+	INNER JOIN (SELECT name as evolved_pokemon, pokemon_id from pokemon) p2
+	ON p2.pokemon_id = e.evolved_pokemon_id;
 END $$
 
 DELIMITER ;

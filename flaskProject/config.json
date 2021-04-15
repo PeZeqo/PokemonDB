@@ -1,6 +1,6 @@
 {
   "user": "root",
-  "password": "password",
+  "password": "PASSWORD_HERE",
   "host": "127.0.0.1",
   "database": "pokemon"
 }
