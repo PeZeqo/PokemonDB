@@ -21,14 +21,14 @@ Adds a new Pokémon to the database, including the core information that make it
 |type1|Integer|The primary type of the Pokémon |y
 |type2|Integer|The secondary type of the Pokémon|n|
 
-#### /Pokémon/get [PUT]
+#### /Pokémon/get [GET]
 Gathers a specific Pokémon from the database. Includes only it's id, name, and type information.
 
 |Input |Input Type |Input Desc.| Required (y/n) |
 |---|---|---|---|
 |Pokémon_id|Integer|The id of the Pokémon to retreive| y|
 
-#### /Pokémon/get_with_stats [PUT]
+#### /Pokémon/get_with_stats [GET]
 Gathers a specific Pokémon from the database. Includes extra info about it's base stats in battle.
 
 |Input |Input Type |Input Desc.| Required (y/n) |
@@ -55,21 +55,21 @@ Adds a captured Pokémon into the database. Please note, this is an instance of 
 |nickname|String|The nickname of the Pokémon being added.|y|
 |trainer_id|Integer|The trainer id which owns this captured Pokémon.|y|
 
-#### /capturedPokemon/get [PUT]
+#### /capturedPokemon/get [GET]
 Retreives base information about a captured Pokémon from the database. This includes its id, level, name, owner's id, and Pokémon_id it is an instance of.
 
 |Input |Input Type |Input Desc.| Required (y/n) |
 |---|---|---|---|
 |captured_Pokémon_id|Integer| The id of the captured Pokémon you want information about.|y|
 
-#### /capturedPokemon/get/full [PUT]
+#### /capturedPokemon/get/full [GET]
 Retrieves complete information about a given captured Pokémon. Includes its stats, if, level, Pokémon name, nickname, and type information.
 
 |Input |Input Type |Input Desc.| Required (y/n) |
 |---|---|---|---|
 |captured_Pokémon_id|Integer| The id of the captured Pokémon you want information about.|y|
 
-#### /capturedPokemon/get/trainer [PUT]
+#### /capturedPokemon/get/trainer [GET]
 Retreives a list of captured Pokémon associated with a given trainer.
 
 |Input |Input Type |Input Desc.| Required (y/n) |
@@ -163,14 +163,14 @@ Inserts a new move into the database.
 |pp|Integer| The number of times the move can be used. | y|
 |category|String| The type of damage/defense this move provides (if any)| y|
 
-#### /move/get/id [PUT]
+#### /move/get/id [GET]
 Gets information about a move, by it's id.
 
 |Input|Input Type|Input Desc.|Required (y/n)|
 |---|---|---|----|
 |move_id|Integer| The id of the move to request information about | y|
 
-#### /move/get/name [PUT]
+#### /move/get/name [GET]
 Gets information about a move, by it's name.
 
 |Input|Input Type|Input Desc.|Required (y/n)|
@@ -203,7 +203,7 @@ Teaches a captured Pokémon a move, by it's name.
 |captured_Pokémon_id|Integer| The id of the captured Pokémon we are teaching a move to. | y|
 |move_name| String|The name of the move the captured Pokémon is being taught. | y|
 
-#### /learnedMove/get [PUT]
+#### /learnedMove/get [GET]
 Gets information about all the moves currently learned by the captured pokemon, identified by it's id.
 
 |Input|Input Type|Input Desc.|Required (y/n)|
@@ -242,7 +242,7 @@ Creates a stats entry for a Pokémon in the database.
 |spdef|Integer| The base special defense for this Pokémon. | y|
 |spd|Integer| The base speed defense for this Pokémon. | y|
 
-#### /stats/get [PUT]
+#### /stats/get [GET]
 Retrieves a stats entry for a Pokémon in the database.
 
 |Input|Input Type|Input Desc.|Required (y/n)|
@@ -282,7 +282,7 @@ Adds a record of a battle to the database.
 |winner_id|Integer| The id of the trainer which won this battle.|y|
 |prize|Integer| The amount of money awarded to the winning trainer.|y|
 
-#### /battle/get [PUT]
+#### /battle/get [GET]
 Retrieves a list of the battles stored in the database, that a provided trainer participated in.
 
 |Input|Input Type|Input Desc.|Required (y/n)|
@@ -307,7 +307,7 @@ Adds a trainer into the database.
 |trainer_name|String|The name of the trainer to insert.|y|
 
 
-#### /trainer/get [PUT]
+#### /trainer/get [GET]
 Gathers information about a trainer, given it's ID. Specifically, finds the location, amount of money they have, their name, and number of captured Pokémon.
 
 |Input|Input Type|Input Desc.|Required (y/n)|
