@@ -14,7 +14,7 @@ mysql = MySQL(app)
 
 '''
 -------------------------------------
-HELPER API's
+HELPER FUNCTION'S
 -------------------------------------
 '''
 def init_db():
@@ -557,6 +557,7 @@ class RemoveBattle(Resource):
         args = self.parser.parse_args()
         query = ("CALL remove_battle({})".format(args['battle_id']))
         return execute_and_format(query, True)
+
 
 if __name__ == '__main__':
     init_db()

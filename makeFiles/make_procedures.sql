@@ -316,8 +316,11 @@ DELIMITER $$
 
 CREATE PROCEDURE get_pokemon_moves(IN cpt_pk_id INT)
 BEGIN
-	SELECT move.* FROM move 
-    NATURAL JOIN capturedpokemon
+	SELECT * FROM learnedmoves lm
+    INNER JOIN move m
+    ON m.move_id = lm.move_id
+    INNER JOIN capturedpokemon cp
+    ON cp.capt_pokemon_id = lm.capt_pokemon_id
     WHERE capt_pokemon_id = cpt_pk_id;
 END $$
 

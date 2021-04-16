@@ -204,7 +204,11 @@ Teaches a captured Pokémon a move, by it's name.
 |move_name| String|The name of the move the captured Pokémon is being taught. | y|
 
 #### /learnedMove/get [PUT]
-PETER PLEASE DOCUMENT THIS, I DON'T UNDERSTAND WHAT IT DOES?
+Gets information about all the moves currently learned by the captured pokemon, identified by it's id.
+
+|Input|Input Type|Input Desc.|Required (y/n)|
+|---|---|---|----|
+|captured_Pokémon_id|Integer| The id of the captured Pokémon we are gettings the moves of. | y|
 
 #### /learnedMove/remove/id [POST]
 Removes a Pokémons learned move by id.
