@@ -406,7 +406,7 @@ class GetTrainer(Resource):
 @api.route('/trainer/add/')
 class AddTrainer(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
-    parser.add_argument('trainer_name', type=int, required=True, help="Trainer's Name")
+    parser.add_argument('trainer_name', type=str, required=True, help="Trainer's Name")
     @api.expect(parser)
     @api.response(200, 'Trainer added to DB')
     def post(self):
