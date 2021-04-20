@@ -14,7 +14,7 @@ mysql = MySQL(app)
 
 '''
 -------------------------------------
-HELPER API's
+HELPER FUNCTION'S
 -------------------------------------
 '''
 def init_db():
@@ -58,7 +58,7 @@ class GetPokemon(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('pokemon_id', type=int, required=True, help="Pokemon's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_pokemon_by_id({})".format(args['pokemon_id']))
         return execute_and_format(query)
@@ -96,7 +96,7 @@ class GetPokemonWithStats(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('pokemon_id', type=int, required=True, help="Pokemon's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_pokemon_and_stats({})".format(args['pokemon_id']))
         return execute_and_format(query)
@@ -112,7 +112,7 @@ class GetStatsByID(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('pokemon_id', type=int, required=True, help="Pokemon's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_pokemon_stats_by_id({})".format(args['pokemon_id']))
         return execute_and_format(query)
@@ -180,7 +180,7 @@ class GetTrainersPokemon(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('trainer_id', type=int, required=True, help="Trainer's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_trainers_pokemon({})".format(args['trainer_id']))
         return execute_and_format(query)
@@ -191,7 +191,7 @@ class GetCapturedPokemon(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('captured_pokemon_id', type=int, required=True, help="Captured Pokemon's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_captured_pokemon({})".format(args['captured_pokemon_id']))
         return execute_and_format(query)
@@ -202,7 +202,7 @@ class GetFullCapturedPokemonInfo(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('captured_pokemon_id', type=int, required=True, help="Captured Pokemon's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_full_captured_pokemon_info({})".format(args['captured_pokemon_id']))
         return execute_and_format(query)
@@ -271,7 +271,7 @@ class GetMoveById(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('move_id', type=int, required=True, help="Move's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_move_by_id({})".format(args['move_id']))
         return execute_and_format(query)
@@ -282,7 +282,7 @@ class GetMoveByName(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('move_name', type=str, required=True, help="Move's Name")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_move_by_name(\"{}\")".format(args['move_name']))
         return execute_and_format(query)
@@ -329,7 +329,7 @@ class GetCapturedPokemonMoves(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('captured_pokemon_id', type=int, required=True, help="Captured Pokemon's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_pokemon_moves({})".format(args['captured_pokemon_id']))
         return execute_and_format(query)
@@ -397,7 +397,7 @@ class GetTrainer(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('trainer_id', type=int, required=True, help="Trainer's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_trainer({})".format(args['trainer_id']))
         return execute_and_format(query)
@@ -406,7 +406,7 @@ class GetTrainer(Resource):
 @api.route('/trainer/add/')
 class AddTrainer(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
-    parser.add_argument('trainer_name', type=int, required=True, help="Trainer's Name")
+    parser.add_argument('trainer_name', type=str, required=True, help="Trainer's Name")
     @api.expect(parser)
     @api.response(200, 'Trainer added to DB')
     def post(self):
@@ -525,7 +525,7 @@ class GetTrainerBattles(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('trainer_id', type=int, required=True, help="Trainer's ID")
     @api.expect(parser)
-    def put(self):
+    def get(self):
         args = self.parser.parse_args()
         query = ("CALL get_trainer_battles({})".format(args['trainer_id']))
         return execute_and_format(query)
@@ -557,6 +557,7 @@ class RemoveBattle(Resource):
         args = self.parser.parse_args()
         query = ("CALL remove_battle({})".format(args['battle_id']))
         return execute_and_format(query, True)
+
 
 if __name__ == '__main__':
     init_db()
