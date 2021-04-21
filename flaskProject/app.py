@@ -132,7 +132,7 @@ class AddStats(Resource):
     @api.response(200, 'Stats for Pokemon added to DB')
     def post(self):
         args = self.parser.parse_args()
-        query = ("CALL get_pokemon_stats_by_id({}, {}, {}, {}, {}, {}, {})".format(
+        query = ("CALL add_stats({}, {}, {}, {}, {}, {}, {})".format(
             args['pokemon_id'], args['hp'], args['atk'], args['def'],
             args['spatk'], args['spdef'], args['spd']))
         return execute_and_format(query, True)
@@ -344,7 +344,7 @@ class LearnMoveById(Resource):
     @api.response(200, 'Learned Move added to DB')
     def post(self):
         args = self.parser.parse_args()
-        query = ("CALL learn_move_by_id({})".format(args['captured_pokemon_id'], args['move_id']))
+        query = ("CALL learn_move_by_id({}, {})".format(args['captured_pokemon_id'], args['move_id']))
         return execute_and_format(query, True)
 
 
@@ -352,7 +352,7 @@ class LearnMoveById(Resource):
 class LearnMoveByName(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('captured_pokemon_id', type=int, required=True, help="Captured Pokemon's ID")
-    parser.add_argument('move_name', type=int, required=True, help="Move's Name")
+    parser.add_argument('move_name', type=str, required=True, help="Move's Name")
     @api.expect(parser)
     @api.response(200, 'Learned Move added to DB')
     def post(self):
@@ -370,7 +370,7 @@ class ForgetMoveById(Resource):
     @api.response(200, 'Learned Move removed from DB')
     def post(self):
         args = self.parser.parse_args()
-        query = ("CALL forget_move_by_id({})".format(args['captured_pokemon_id'], args['move_id']))
+        query = ("CALL forget_move_by_id({}, {})".format(args['captured_pokemon_id'], args['move_id']))
         return execute_and_format(query, True)
 
 
@@ -378,7 +378,7 @@ class ForgetMoveById(Resource):
 class ForgetMoveByName(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('captured_pokemon_id', type=int, required=True, help="Captured Pokemon's ID")
-    parser.add_argument('move_name', type=int, required=True, help="Move's Name")
+    parser.add_argument('move_name', type=str, required=True, help="Move's Name")
     @api.expect(parser)
     @api.response(200, 'Learned Move removed from DB')
     def post(self):
@@ -536,12 +536,14 @@ class AddBattle(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument('trainer_id1', type=int, required=True, help="First Participant's Trainer ID")
     parser.add_argument('trainer_id2', type=int, required=True, help="Second Participant's Trainer ID")
-    parser.add_argument('winner_id', type=int, required=True, help="Winning Trainer's ID")
+    parser.add_argument('winner_id', type=int, required=True, help="Flag for winner: 0 if Trainer 1 won, 1 if Trainer 2 won")
     parser.add_argument('prize', type=int, required=True)
     @api.expect(parser)
     @api.response(200, 'Battle added to DB')
     def post(self):
         args = self.parser.parse_args()
+        if args['winner_id'] not in [0, 1]:
+            return "winner_id must be 0 or 1"
         query = ("CALL add_battle({}, {}, {}, {})".format(
             args['trainer_id1'], args['trainer_id2'], args['winner_id'], args['prize']))
         return execute_and_format(query, True)

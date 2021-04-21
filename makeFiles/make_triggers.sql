@@ -1,18 +1,22 @@
+-- SELECT Concat('DROP TRIGGER ', Trigger_Name, ';') FROM  information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = 'pokemon';
+
+Use pokemon;
+
 -- TRAINER BATTLE TRIGGERS
 
-DROP TRIGGER IF EXISTS increment_trainer_money;
+DROP TRIGGER IF EXISTS transfer_trainer_money;
 DELIMITER $$
 
-CREATE TRIGGER increment_trainer_money
+CREATE TRIGGER transfer_trainer_money
 	AFTER INSERT ON Battles
 	FOR EACH ROW
 BEGIN
 	UPDATE Trainer
 	SET money = (money+NEW.prize)
-	WHERE trainer_id = NEW.winner;
+	WHERE trainer_id = IF(NEW.winner = 0, NEW.trainer1, NEW.trainer2);
     UPDATE Trainer
 	SET money = (money-NEW.prize)
-	WHERE trainer_id = IF(NEW.winner = NEW.trainer1, NEW.trainer2, NEW.trainer1);
+	WHERE trainer_id = IF(NEW.winner = 1, NEW.trainer1, NEW.trainer2);
 END $$
 
 DELIMITER ;

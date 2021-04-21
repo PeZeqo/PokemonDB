@@ -316,12 +316,12 @@ DELIMITER $$
 
 CREATE PROCEDURE get_pokemon_moves(IN cpt_pk_id INT)
 BEGIN
-	SELECT * FROM learnedmoves lm
+	SELECT m.* FROM learnedmoves lm
     INNER JOIN move m
     ON m.move_id = lm.move_id
     INNER JOIN capturedpokemon cp
     ON cp.capt_pokemon_id = lm.capt_pokemon_id
-    WHERE capt_pokemon_id = cpt_pk_id;
+    WHERE lm.capt_pokemon_id = cpt_pk_id;
 END $$
 
 DELIMITER ;
@@ -332,7 +332,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS learn_move_by_id;
 DELIMITER $$
 
-CREATE PROCEDURE learn_move_by_id(IN move_id INT, IN cpt_pk_id INT)
+CREATE PROCEDURE learn_move_by_id(IN cpt_pk_id INT, IN move_id INT)
 BEGIN
 	INSERT INTO learnedmoves VALUES (move_id, cpt_pk_id);
 END $$
@@ -345,7 +345,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS learn_move_by_name;
 DELIMITER $$
 
-CREATE PROCEDURE learn_move_by_name(IN move_name VARCHAR(50), IN cpt_pk_id INT)
+CREATE PROCEDURE learn_move_by_name(IN cpt_pk_id INT, IN move_name VARCHAR(50))
 BEGIN
 	INSERT INTO learnedmoves VALUES (
 		(SELECT move_id FROM move WHERE name = move_name), 
@@ -360,7 +360,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS forget_move_by_id;
 DELIMITER $$
 
-CREATE PROCEDURE forget_move_by_id(IN mv_id INT, IN cpt_pk_id INT)
+CREATE PROCEDURE forget_move_by_id(IN cpt_pk_id INT, IN mv_id INT)
 BEGIN
 	DELETE FROM learnedmoves 
     WHERE move_id = mv_id AND capt_pokemon_id = cpt_pk_id;
@@ -374,7 +374,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS forget_move_by_name;
 DELIMITER $$
 
-CREATE PROCEDURE forget_move_by_name(IN move_name VARCHAR(50), IN cpt_pk_id INT)
+CREATE PROCEDURE forget_move_by_name(IN cpt_pk_id INT, IN move_name VARCHAR(50))
 BEGIN
 	DELETE FROM learnedmoves 
     WHERE move_id = (SELECT move_id FROM move WHERE name = move_name) 
